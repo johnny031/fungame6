@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <title>fungame6</title>
+  </head>
+  <body>
+    <div class="container-fluid setting_div">
+      <h3>遊戲人數：</h3>
+      <input autofocus type="number" id="number" />
+      <button id="number_button" onclick="input_show()">確認</button>
+      <br /><br />
+      <h3 id="names_title" style="display: none;">玩家名稱：</h3>
+      <div id="input_div"></div>
+      <button id="start_button" onclick="start()" style="display: none;">
+        開始
+      </button>
+    </div>
+    <div class="container-fluid cards_div" style="display: none;">
+      <button id="check_cards" onclick="check_cards()">檢查卡牌</button>
+      <button id="check_identity" onclick="check_identity()">確認身分</button>
+      <h5 id="identity_h5"></h5>
+      <h5 id="current_round_h5" style="display: none;">
+        現在為 <span id="whos_round"></span> 回合
+      </h5>
+      <h5>剩餘引線：<span id="left_wire"></span> 個</h5>
+      <table id="cards_table"></table>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="main.js"></script>
+</html>

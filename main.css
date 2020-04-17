@@ -1,0 +1,20 @@
+body {
+  padding: 12px;
+}
+h3,
+h5,
+td,
+button {
+  font-family: Microsoft JhengHei;
+}
+img {
+  width: 80px;
+  height: 144px;
+}
+#whos_round {
+  border-bottom: 1px solid black;
+}
+td button {
+  border: none;
+  background-color: transparent;
+}
