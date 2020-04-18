@@ -212,12 +212,12 @@ $(document).on("click", ".none, .remove, .bomb", function () {
     count = 0;
     $("#current_round_h5").slideUp();
     setTimeout(() => {
-      if (round === 1) {
-        alert("過四回合而引線尚未被全部解除，莫里亞蒂陣營獲勝，遊戲結束");
-        over();
-        return false;
-      }
       if (!gameOver) {
+        if (round === 1) {
+          alert("過四回合而引線尚未被全部解除，莫里亞蒂陣營獲勝，遊戲結束");
+          over();
+          return false;
+        }
         $("#cards_table").fadeOut(400, function () {
           $("#cards_table").html("");
           deal(round);
