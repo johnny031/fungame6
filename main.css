@@ -8,8 +8,8 @@ button {
   font-family: Microsoft JhengHei;
 }
 img {
-  width: 80px;
-  height: 144px;
+  width: 90px;
+  height: 153px;
 }
 #whos_round {
   border-bottom: 1px solid black;
@@ -17,9 +17,11 @@ img {
 td button {
   border: none;
   background-color: transparent;
+  padding: 3px 2px;
 }
 #identity_h5 {
   margin-top: 0.5rem;
+  font-weight: bolder;
 }
 @media only screen and (max-width: 600px) {
   body {
@@ -34,7 +36,7 @@ td button {
   }
   img {
     width: 50px;
-    height: 90px;
+    height: 85px;
   }
   .cards_div {
     padding: 0 8px;
