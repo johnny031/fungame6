@@ -7,6 +7,18 @@ let check_seq = 0;
 let identity_seq = 0;
 let current_player;
 let left_wire;
+let gameOver = false;
+$.fn.preload = function () {
+  this.each(function () {
+    $("<img/>")[0].src = this;
+  });
+};
+$([
+  "img/card_back.png",
+  "img/remove.png",
+  "img/none.png",
+  "img/bomb.png",
+]).preload();
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -38,8 +50,6 @@ function input_show() {
   for (let i = 0; i < numbers * 4 - 1; i++) {
     setting.push("none");
   }
-  shuffle(setting);
-  console.log(setting);
   left_wire = numbers;
   $("#left_wire").html(left_wire);
   if (numbers == 4 || numbers == 5) {
@@ -59,7 +69,6 @@ function input_show() {
     ];
   }
   shuffle(identity);
-  console.log(identity);
 }
 function start() {
   let empty = false;
@@ -83,6 +92,7 @@ function start() {
   $(".cards_div").show();
 }
 function deal(round) {
+  shuffle(setting);
   for (let i = 0; i < $("#number").val(); i++) {
     let tr = document.createElement("tr");
     tr.setAttribute("id", "tr" + i);
@@ -104,6 +114,7 @@ function deal(round) {
     }
     $("#cards_table").append(tr);
   }
+  $("#cards_table").fadeIn(400);
 }
 function check_identity() {
   if (identity_seq % 2 === 0) {
@@ -123,17 +134,19 @@ function check_cards() {
       let attr = $("#tr" + check_seq / 2 + " .img" + i)
         .parent("button")
         .attr("class");
-      $("#tr" + check_seq / 2 + " .img" + i).attr(
-        "src",
-        "img/" + attr + ".png"
-      );
+      let image = $("#tr" + check_seq / 2 + " .img" + i);
+      image.fadeOut("fast", function () {
+        image.attr("src", "img/" + attr + ".png");
+        image.fadeIn("fast");
+      });
     }
   } else {
     for (let i = 0; i < round; i++) {
-      $("#tr" + (check_seq - 1) / 2 + " .img" + i).attr(
-        "src",
-        "img/card_back.png"
-      );
+      let image = $("#tr" + (check_seq - 1) / 2 + " .img" + i);
+      image.fadeOut("fast", function () {
+        image.attr("src", "img/card_back.png");
+        image.fadeIn("fast");
+      });
     }
   }
   check_seq++;
@@ -169,34 +182,52 @@ function button_enable() {
 }
 $(document).on("click", ".none, .remove, .bomb", function () {
   setting.splice($.inArray($(this).attr("class"), setting), 1);
-  $(this).children("img").css("visibility", "hidden");
   current_player = $(this).closest("tr").attr("id").slice(-1);
   $("#whos_round").html(names[current_player]);
   button_enable();
-  if ($(this).attr("class") === "remove") {
-    alert("解除一條引線！");
-    left_wire--;
-    $("#left_wire").html(left_wire);
-    if (left_wire === 0) {
-      alert("已解除所有引線，夏洛克陣營獲勝，遊戲結束");
+  let image = $(this).children("img");
+  image.fadeOut(200, function () {
+    image.attr("src", "img/" + image.parent("button").attr("class") + ".png");
+    image.fadeIn(200);
+  });
+  setTimeout(() => {
+    if ($(this).attr("class") === "remove") {
+      left_wire--;
+      $("#left_wire").html(left_wire);
+      alert("解除一條引線！");
+      if (left_wire === 0) {
+        alert("已解除所有引線，夏洛克陣營獲勝，遊戲結束");
+        over();
+        return false;
+      }
+    } else if ($(this).attr("class") === "bomb") {
+      alert("炸彈被觸發，莫里亞蒂陣營獲勝，遊戲結束");
+      over();
       return false;
     }
-  } else if ($(this).attr("class") === "bomb") {
-    alert("炸彈被觸發，莫里亞蒂陣營獲勝，遊戲結束");
-    return false;
-  }
+  }, 500);
   count++;
   if (count == $("#number").val()) {
     round--;
     count = 0;
-    if (round === 1) {
-      alert("過四回合而引線尚未被全部解除，莫里亞蒂陣營獲勝，遊戲結束");
-      return false;
-    }
-    shuffle(setting);
     $("#current_round_h5").slideUp();
-    $("#cards_table").html("");
-    deal(round);
-    $("#check_cards").prop("disabled", false);
+    setTimeout(() => {
+      if (round === 1) {
+        alert("過四回合而引線尚未被全部解除，莫里亞蒂陣營獲勝，遊戲結束");
+        over();
+        return false;
+      }
+      if (!gameOver) {
+        $("#cards_table").fadeOut(400, function () {
+          $("#cards_table").html("");
+          deal(round);
+        });
+        $("#check_cards").prop("disabled", false);
+      }
+    }, 600);
   }
 });
+function over() {
+  gameOver = true;
+  $("button").prop("disabled", true);
+}

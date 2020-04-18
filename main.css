@@ -1,5 +1,5 @@
 body {
-  padding: 12px;
+  padding: 12px 12px 50px 12px;
 }
 h3,
 h5,
@@ -17,4 +17,26 @@ img {
 td button {
   border: none;
   background-color: transparent;
+}
+#identity_h5 {
+  margin-top: 0.5rem;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    padding: 8px 0 50px 0;
+  }
+  #check_cards,
+  #check_identity {
+    font-size: 14px;
+  }
+  td button {
+    padding: 2px 1px;
+  }
+  img {
+    width: 50px;
+    height: 90px;
+  }
+  .cards_div {
+    padding: 0 8px;
+  }
 }
